@@ -73,6 +73,13 @@ public class JSProvider implements IScriptEngineProvider {
                 // Need to set this either here or in runtime
                 System.getProperties().put("polyglot.js.nashorn-compat", "true");
 
+                // Allow loading CommonJS modules through 'require()'
+                // See https://docs.oracle.com/en/graalvm/enterprise/21/docs/reference-manual/js/Modules/
+                System.getProperties().put("polyglot.js.commonjs-require", "true");
+                // Note: commonjs-require-cwd must be defined and should point to the parent of the 'node_modules' folder
+                // TODO: Whatever path we use, at runtime it always points to the 'scripts' folder. Should investigate why.
+                System.getProperties().put("polyglot.js.commonjs-require-cwd", ArchiScriptPlugin.INSTANCE.getUserScriptsFolder().getAbsolutePath());
+
                 engine = new ScriptEngineManager().getEngineByName("graal.js");
                 
                 // See https://www.graalvm.org/reference-manual/js/ScriptEngine/
