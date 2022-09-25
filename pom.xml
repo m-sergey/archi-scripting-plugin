@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.archimatetool</groupId>
+    <artifactId>jArchi</artifactId>
+    <version>1.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>jArchi</name>
+
+    <properties>
+        <tycho-version>3.0.0</tycho-version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
+    
+    <repositories>
+        <repository>
+            <id>archi</id>
+            <layout>p2</layout>
+            <url>https://www.archimatetool.com/p2-repo/4.10.0</url>
+        </repository>
+        <repository>
+            <id>eclipse</id>
+            <layout>p2</layout>
+            <url>https://download.eclipse.org/eclipse/updates/4.25</url>
+        </repository>
+    </repositories>
+    
+    <modules>
+        <module>com.archimatetool.script</module>
+        <module>com.archimatetool.script.commandline</module>
+        <module>com.archimatetool.script.feature</module>
+        <module>com.archimatetool.script.premium</module>
+        <module>com.archimatetool.script.tests</module>
+    </modules>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-maven-plugin</artifactId>
+                <version>${tycho-version}</version>
+                <extensions>true</extensions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-packaging-plugin</artifactId>
+                <version>${tycho-version}</version>
+                <configuration>
+                    <!-- Replace the "-SNAPSHOT" version when generating jars -->
+                    <finalName>${project.artifactId}_${unqualifiedVersion}.${buildQualifier}</finalName>
+                    <!-- Don't add pom.xml and pom.properties files to META-INF folder  -->
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>target-platform-configuration</artifactId>
+                <version>${tycho-version}</version>
+                <configuration>
+                    <environments>
+                        <environment>
+                            <os>win32</os>
+                            <ws>win32</ws>
+                            <arch>x86_64</arch>
+                        </environment>
+                        <environment>
+                            <os>linux</os>
+                            <ws>gtk</ws>
+                            <arch>x86_64</arch>
+                        </environment>
+                        <environment>
+                            <os>macosx</os>
+                            <ws>cocoa</ws>
+                            <arch>x86_64</arch>
+                        </environment>
+                        <environment>
+                            <os>macosx</os>
+                            <ws>cocoa</ws>
+                            <arch>aarch64</arch>
+                        </environment>
+                    </environments>
+                </configuration>
+            </plugin>
+            
+            <plugin>
+                <groupId>org.eclipse.tycho</groupId>
+                <artifactId>tycho-surefire-plugin</artifactId>
+                <version>${tycho-version}</version>
+                <configuration>
+                    <includes>
+                        <include>**/AllTests.java</include>
+                    </includes>                    
+                </configuration>
+            </plugin>
+            
+        </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.eclipse.tycho</groupId>
+                    <artifactId>tycho-compiler-plugin</artifactId>
+                    <version>${tycho-version}</version>
+                    <configuration>
+                        <encoding>UTF-8</encoding>
+                        <useProjectSettings>false</useProjectSettings>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>osx</id>
+            <activation>
+                <os>
+                    <family>mac</family>
+                </os>
+            </activation>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.eclipse.tycho</groupId>
+                            <artifactId>tycho-surefire-plugin</artifactId>
+                            <version>${tycho-version}</version>
+                            <configuration>
+                                <argLine>-XstartOnFirstThread</argLine>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+            </build>
+        </profile>
+    </profiles>
+
+</project>
