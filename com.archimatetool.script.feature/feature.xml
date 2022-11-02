@@ -36,17 +36,6 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
    </license>
 
-   <requires>
-      <import plugin="org.eclipse.core.runtime"/>
-      <import plugin="org.eclipse.ui"/>
-      <import plugin="org.eclipse.help.ui"/>
-      <import plugin="com.archimatetool.editor"/>
-      <import plugin="com.archimatetool.commandline"/>
-      <import plugin="com.archimatetool.help"/>
-      <import plugin="com.archimatetool.editor.browser"/>
-      <import plugin="com.archimatetool.canvas"/>
-   </requires>
-
    <plugin
          id="com.archimatetool.script"
          download-size="0"
@@ -70,6 +59,12 @@ OTHER DEALINGS IN THE SOFTWARE.
 
    <plugin
          id="com.archimatetool.script.nashorn"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="com.archimatetool.script.help"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
