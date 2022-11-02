@@ -66,12 +66,9 @@ public class JSProvider implements IScriptEngineProvider {
     
     @Override
     public void run(File file, ScriptEngine engine) throws IOException, ScriptException {
-        // Initialize jArchi using the provided init.js script
-        URL initURL = ArchiScriptPlugin.INSTANCE.getBundle().getEntry("js/init.js");
-        try(InputStreamReader initReader = new InputStreamReader(initURL.openStream());) {
-            engine.eval(initReader);
-        }
-
+        // Init script
+        init(engine);
+        
         // Normalize filename so that nashorn's load() can run it
         String scriptPath = PlatformUtils.isWindows() ? file.getAbsolutePath().replace('\\', '/') : file.getAbsolutePath();
         
@@ -82,6 +79,20 @@ public class JSProvider implements IScriptEngineProvider {
         engine.eval("load('" + scriptPath + "')");
 	}
 
+    @Override
+    public void run(String script, ScriptEngine engine) throws IOException, ScriptException {
+        init(engine);
+        engine.eval(script);
+    }
+    
+    // Initialize jArchi using the provided init.js script
+    private void init(ScriptEngine engine) throws IOException, ScriptException {
+        URL initURL = ArchiScriptPlugin.INSTANCE.getBundle().getEntry("js/init.js"); //$NON-NLS-1$
+        try(InputStreamReader initReader = new InputStreamReader(initURL.openStream());) {
+            engine.eval(initReader);
+        }
+    }
+    
     @Override
     public ScriptEngine createScriptEngine() {
         ScriptEngine engine = null;
